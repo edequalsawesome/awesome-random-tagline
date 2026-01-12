@@ -75,7 +75,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
         
         // Validate bulk import text size
         if (bulkImportText.length > 50000) { // 50KB limit
-            alert(__('Text content too large. Please limit to 50KB.', 'awesome-random-description-block'));
+            alert(__('Text content too large. Please limit to 50KB.', 'awesome-random-tagline'));
             return;
         }
         
@@ -92,7 +92,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
             .filter(line => line.length > 0);
         
         if (newTaglines.length === 0) {
-            alert(__('No valid taglines found in the text.', 'awesome-random-description-block'));
+            alert(__('No valid taglines found in the text.', 'awesome-random-tagline'));
             return;
         }
         
@@ -108,14 +108,14 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
         
         // Validate file type
         if (file.type !== 'text/csv' && !file.name.toLowerCase().endsWith('.csv')) {
-            alert(__('Please select a valid CSV file.', 'awesome-random-description-block'));
+            alert(__('Please select a valid CSV file.', 'awesome-random-tagline'));
             event.target.value = ''; // Clear the input
             return;
         }
         
         // Validate file size (limit to 1MB)
         if (file.size > 1024 * 1024) {
-            alert(__('File size must be less than 1MB.', 'awesome-random-description-block'));
+            alert(__('File size must be less than 1MB.', 'awesome-random-tagline'));
             event.target.value = ''; // Clear the input
             return;
         }
@@ -126,7 +126,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
             
             // Validate content length
             if (content.length > 100000) { // 100KB limit
-                alert(__('File content too large.', 'awesome-random-description-block'));
+                alert(__('File content too large.', 'awesome-random-tagline'));
                 return;
             }
             
@@ -144,7 +144,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                 .map(line => line.substring(0, 500)); // Ensure we don't exceed 500 chars
                 
             if (newTaglines.length === 0) {
-                alert(__('No valid taglines found in the CSV file.', 'awesome-random-description-block'));
+                alert(__('No valid taglines found in the CSV file.', 'awesome-random-tagline'));
                 return;
             }
                 
@@ -152,7 +152,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
         };
         
         reader.onerror = () => {
-            alert(__('Error reading file. Please try again.', 'awesome-random-description-block'));
+            alert(__('Error reading file. Please try again.', 'awesome-random-tagline'));
         };
         
         reader.readAsText(file);
@@ -211,10 +211,10 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
             </BlockControls>
             
             <InspectorControls>
-                <PanelBody title={__('Taglines', 'awesome-random-description-block')} initialOpen={true}>
+                <PanelBody title={__('Taglines', 'awesome-random-tagline')} initialOpen={true}>
                     <div className="taglines-panel">
                         {taglines.length === 0 ? (
-                            <p>{__('No taglines added yet. Add some below!', 'awesome-random-description-block')}</p>
+                            <p>{__('No taglines added yet. Add some below!', 'awesome-random-tagline')}</p>
                         ) : (
                             taglines.map((tagline, index) => (
                                 <div key={index} className="tagline-item components-flex">
@@ -228,7 +228,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                                         isDestructive
                                         onClick={() => removeTagline(index)}
                                         icon="no-alt"
-                                        label={__('Remove tagline', 'awesome-random-description-block')}
+                                        label={__('Remove tagline', 'awesome-random-tagline')}
                                     />
                                 </div>
                             ))
@@ -241,7 +241,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                                 onClick={addTagline}
                                 icon="plus"
                             >
-                                {__('Add Tagline', 'awesome-random-description-block')}
+                                {__('Add Tagline', 'awesome-random-tagline')}
                             </Button>
                             
                             <Button
@@ -250,7 +250,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                                 onClick={() => setShowBulkImportModal(true)}
                                 icon="upload"
                             >
-                                {__('Bulk Import', 'awesome-random-description-block')}
+                                {__('Bulk Import', 'awesome-random-tagline')}
                             </Button>
 
                             {taglines.length > 0 && (
@@ -260,7 +260,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                                     onClick={handleExport}
                                     icon="download"
                                 >
-                                    {__('Export CSV', 'awesome-random-description-block')}
+                                    {__('Export CSV', 'awesome-random-tagline')}
                                 </Button>
                             )}
                         </div>
@@ -272,23 +272,23 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                 {taglines.length === 0 ? (
                     <Placeholder
                         icon="format-quote"
-                        label={__('Random Description', 'awesome-random-description-block')}
-                        instructions={__('Add taglines in the block settings to display a random one each time the page loads.', 'awesome-random-description-block')}
+                        label={__('Random Description', 'awesome-random-tagline')}
+                        instructions={__('Add taglines in the block settings to display a random one each time the page loads.', 'awesome-random-tagline')}
                     >
                         <Button
                             isPrimary
                             onClick={addTagline}
                         >
-                            {__('Add Your First Tagline', 'awesome-random-description-block')}
+                            {__('Add Your First Tagline', 'awesome-random-tagline')}
                         </Button>
                     </Placeholder>
                 ) : (
                     <div className="random-description-preview">
                         <div className="random-description-content">
-                            <p>{taglines[0] || __('Your random tagline will appear here', 'awesome-random-description-block')}</p>
+                            <p>{taglines[0] || __('Your random tagline will appear here', 'awesome-random-tagline')}</p>
                             <div className="random-description-info">
                                 <span className="random-description-count">
-                                    {__('You have', 'awesome-random-description-block')} {taglines.length} {taglines.length === 1 ? __('tagline', 'awesome-random-description-block') : __('taglines', 'awesome-random-description-block')}
+                                    {__('You have', 'awesome-random-tagline')} {taglines.length} {taglines.length === 1 ? __('tagline', 'awesome-random-tagline') : __('taglines', 'awesome-random-tagline')}
                                 </span>
                             </div>
                         </div>
@@ -298,23 +298,23 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
             
             {showBulkImportModal && (
                 <Modal
-                    title={__('Bulk Import Taglines', 'awesome-random-description-block')}
+                    title={__('Bulk Import Taglines', 'awesome-random-tagline')}
                     onRequestClose={() => setShowBulkImportModal(false)}
                 >
                     <div className="bulk-import-modal">
                         <TextareaControl
-                            label={__('Enter one tagline per line:', 'awesome-random-description-block')}
+                            label={__('Enter one tagline per line:', 'awesome-random-tagline')}
                             value={bulkImportText}
                             onChange={setBulkImportText}
                             rows={10}
                         />
                         
                         <div className="bulk-import-divider">
-                            <span>{__('OR', 'awesome-random-description-block')}</span>
+                            <span>{__('OR', 'awesome-random-tagline')}</span>
                         </div>
                         
                         <div className="bulk-import-file">
-                            <label htmlFor="tagline-csv">{__('Import from CSV:', 'awesome-random-description-block')}</label>
+                            <label htmlFor="tagline-csv">{__('Import from CSV:', 'awesome-random-tagline')}</label>
                             <input
                                 id="tagline-csv"
                                 type="file"
@@ -329,14 +329,14 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                                 onClick={handleBulkImport}
                                 disabled={!bulkImportText.trim()}
                             >
-                                {__('Import Text', 'awesome-random-description-block')}
+                                {__('Import Text', 'awesome-random-tagline')}
                             </Button>
                             
                             <Button
                                 isSecondary
                                 onClick={() => setShowBulkImportModal(false)}
                             >
-                                {__('Cancel', 'awesome-random-description-block')}
+                                {__('Cancel', 'awesome-random-tagline')}
                             </Button>
                         </div>
                     </div>

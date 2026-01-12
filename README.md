@@ -1,23 +1,23 @@
-# Awesome Random Description Block
+# Awesome Random Site Tagline
 
-A lightweight, accessible WordPress Gutenberg block that displays random site descriptions/taglines with immediate loading and comprehensive customization options.
+A lightweight WordPress plugin that adds a "Random Site Tagline" variation to the core Site Tagline block, displaying a random tagline from a custom list on each page load.
 
 ## Description
 
-The Awesome Random Description Block allows you to create a collection of taglines or descriptions that will randomly display each time a page is loaded. It's perfect for adding dynamic, engaging content to your site header, footer, or any page where you want to showcase different aspects of your brand or message. The block displays a random tagline immediately upon page load with no flash or delay.
+The Awesome Random Site Tagline plugin extends the core WordPress Site Tagline block with a new variation that displays random taglines. Instead of showing your site's static tagline, you can provide a list of taglines and one will be randomly selected on each page load. The plugin integrates seamlessly with WordPress's native block system, inheriting all core styling and typography settings.
 
 ## Features
 
-- **Easy Management**: Add, edit, and remove taglines directly from the Gutenberg editor
-- **Text Alignment Controls**: Full support for left, center, right, and justify text alignment
+- **Native Integration**: Extends the core Site Tagline block instead of adding a custom block
+- **Automatic Styling**: Inherits all theme styling from the core Site Tagline block
+- **Easy Management**: Add, edit, and remove taglines directly from the block inspector
 - **Bulk Import**: Import multiple taglines at once via text input or CSV file upload
 - **Export Functionality**: Export your taglines to CSV for backup or sharing
 - **Immediate Display**: Random taglines appear instantly with no flash or loading delay
 - **Responsive Design**: Works beautifully on all device sizes
 - **Accessibility**: Built with proper ARIA labels and semantic HTML
-- **Customizable Styling**: Full support for WordPress theme colors, typography, and spacing
-- **Performance Optimized**: Lightweight, efficient loading, and minimal resource usage
-- **Block API v3**: Built with the latest WordPress block standards
+- **Performance Optimized**: Lightweight filter-based approach with minimal overhead
+- **Backwards Compatible**: Existing blocks from previous versions continue to work
 
 ## Installation
 
@@ -29,16 +29,27 @@ The Awesome Random Description Block allows you to create a collection of taglin
 
 ### Manual Installation
 
-1. Upload the plugin files to the `/wp-content/plugins/awesome-random-description-block` directory
+1. Upload the plugin files to the `/wp-content/plugins/awesome-random-tagline` directory
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Use the Gutenberg editor to add the 'Awesome Random Description' block to your pages
 
 ## Usage
 
-1. **Add the Block**: Insert the "Awesome Random Description" block from the Gutenberg block inserter
-2. **Add Taglines**: Use the block settings panel to add your taglines one by one, or use the bulk import feature
-3. **Customize**: Adjust typography, colors, spacing, text alignment, and other styling options to match your theme
+1. **Add the Block**: Insert the "Random Site Tagline" block from the Gutenberg block inserter (look for it in the Widgets or Design category)
+2. **Add Taglines**: Use the "Random Taglines" panel in the block inspector to add your taglines
+3. **Customize**: Use the standard Site Tagline block controls for typography, colors, and spacing
 4. **Publish**: Save your page and watch your taglines rotate randomly on each page load
+
+### Migrating from Previous Versions
+
+If you have existing "Random Description" blocks from previous versions (1.x), they will continue to work. However, you can migrate them to the new Site Tagline variation:
+
+1. Edit the page containing the old block
+2. Select the "Random Description" block
+3. Click the block toolbar and select "Transform to"
+4. Choose "Site Tagline" from the options
+
+The migration will preserve all your taglines.
 
 ## Performance & Accessibility
 
@@ -90,82 +101,50 @@ Yes, you can import multiple taglines at once by:
 
 ## Technical Details
 
-- **WordPress Version**: 5.0+
+- **WordPress Version**: 6.0+
 - **PHP Version**: 7.4+
-- **Block API Version**: 3
+- **Architecture**: Block variation extending core/site-tagline
 - **Dependencies**: WordPress core only
 - **File Size**: < 50KB total
 
 ## Changelog
 
-### 1.7.1 (Current - Multiple Block Fix)
-* **Bug Fix for Multiple Block Instances**
+### 2026.01.12 (Major Redesign)
+* **Complete Architecture Overhaul**
+* Converted from standalone block to Site Tagline block variation
+* Now extends core/site-tagline block instead of registering a custom block
+* Automatic inheritance of all core block styling (typography, colors, spacing)
+* Reduced maintenance overhead by leveraging WordPress core updates
+* Switched to date-based versioning (YYYY.MM.DD)
+* Increased minimum WordPress requirement to 6.0+
+* Legacy blocks continue to work with backwards compatibility
+* Added transform option to migrate old blocks to new variation
+* Admin notice for users with legacy blocks encouraging migration
+* Cleaner, more maintainable codebase using WordPress hooks and filters
+* Import/export CSV functionality preserved
+
+### 1.7.1
 * Fixed issue where multiple blocks on the same page would display the same random tagline
 * Replaced array_rand() with wp_rand() to ensure each block gets a truly random selection
-* Each block instance now displays different random taglines independently
-* Improved randomization algorithm for better distribution across multiple blocks
 
-### 1.7.0 (Text Alignment Support)
-* **Text Alignment Feature Added**
+### 1.7.0
 * Added full text alignment controls with left, center, right, and justify options
 * Implemented standard WordPress block toolbar alignment buttons
-* Added proper text alignment validation and sanitization
-* Enhanced CSS styling with explicit text alignment class support
-* Improved block compatibility with WordPress theme standards
-* Maintains all existing functionality while adding new alignment capabilities
 
-### 1.6.1 (Security Hardened)
-* **Security Enhancement Update**
-* Fixed critical CSS injection vulnerability with comprehensive input validation
+### 1.6.1
+* Security enhancement update with comprehensive input validation
 * Enhanced file upload security with type, size, and content validation
-* Implemented robust input sanitization for all user inputs
 * Added capability checks and user permission validation
-* Enhanced CSV import security with injection prevention
-* Added comprehensive attribute validation and type checking
-* Improved error handling and resource protection
-* Enhanced information disclosure prevention
-* Strengthened output sanitization using WordPress security functions
 
-### 1.6.0 (Streamlined)
-* **Major Streamlining Update**
+### 1.6.0
 * Removed all animation functionality for immediate display
 * Implemented server-side random tagline selection
 * Eliminated flash effect on page load
-* Further optimized performance with minimal frontend JavaScript
-* Enhanced accessibility with simplified, immediate content display
-* Reduced bundle size and improved loading speed
 
-### 1.5.0 (Optimized)
-* Fixed all naming inconsistencies (removed legacy "super-swank" references)
-* Optimized frontend script loading (only loads when block is present)
-* Improved accessibility with motion preference support
-* Streamlined codebase and removed unnecessary files
-* Enhanced performance with efficient animations
-* Fixed data attribute mismatches between PHP and JavaScript
-* Updated to use consistent CSS class names throughout
-* Improved error handling and code quality
-
-### 1.4.1
-* Improved animation performance and smoothness
-* Enhanced CSS transitions for better user experience
-* Fixed animation timing issues
-
-### 1.4.0
-* Upgraded to Block API version 3
-* Improved performance and compatibility
-* Enhanced block registration
-
-### 1.3.0
-* Added smooth animations with fade effects
-* Improved accessibility with ARIA labels
-* Enhanced responsive design
-* Added animation control settings
-
-### 1.2.5
-* Added bulk import functionality for taglines
-* Added CSV export feature for taglines
-* Improved user interface with better button spacing
-* Enhanced block settings panel organization
+### 1.5.0
+* Fixed naming inconsistencies
+* Optimized frontend script loading
+* Improved accessibility
 
 ## Development
 

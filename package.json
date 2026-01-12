@@ -1,7 +1,7 @@
 {
-  "name": "awesome-random-description-block",
-  "version": "1.7.0",
-  "description": "WordPress block plugin for displaying random site descriptions",
+  "name": "awesome-random-tagline",
+  "version": "2026.01.12",
+  "description": "WordPress plugin that adds a Random Site Tagline variation to the core Site Tagline block",
   "author": "eD! Thomas",
   "license": "GPL-3.0-or-later",
   "main": "build/index.js",

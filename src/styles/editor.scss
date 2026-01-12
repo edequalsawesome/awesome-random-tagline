@@ -1,0 +1,102 @@
+/**
+ * Random Site Tagline Variation - Editor Styles
+ *
+ * These styles apply to the inspector panel controls for the
+ * Random Site Tagline variation of core/site-tagline.
+ */
+
+// Tagline panel styles (used in inspector)
+.taglines-panel {
+	margin-bottom: 16px;
+
+	.tagline-item {
+		margin-bottom: 8px;
+		display: flex;
+		align-items: center;
+
+		.components-base-control {
+			margin: 0;
+			width: 100%;
+			flex: 1 1 auto;
+
+			.components-base-control__field {
+				margin: 0;
+			}
+
+			.components-text-control__input {
+				width: 100%;
+			}
+		}
+
+		.components-button.is-destructive {
+			height: 30px;
+			min-width: 30px;
+			padding: 0;
+			flex: 0 0 auto;
+			margin-left: 8px;
+
+			svg {
+				margin: 0;
+			}
+		}
+	}
+
+	.tagline-actions {
+		margin-top: 16px;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+
+		.components-button {
+			display: flex;
+			width: 100%;
+			justify-content: center;
+			height: auto;
+			padding: 6px 12px;
+			margin: 0;
+
+			svg {
+				margin-right: 8px;
+			}
+		}
+	}
+}
+
+// Bulk import modal styles
+.bulk-import-modal {
+	.bulk-import-divider {
+		display: flex;
+		align-items: center;
+		text-align: center;
+		margin: 1em 0;
+
+		&::before,
+		&::after {
+			content: "";
+			flex: 1;
+			border-bottom: 1px solid #ddd;
+		}
+
+		span {
+			margin: 0 10px;
+			font-weight: bold;
+			color: #757575;
+		}
+	}
+
+	.bulk-import-file {
+		margin-bottom: 1em;
+
+		label {
+			display: block;
+			margin-bottom: 0.5em;
+		}
+	}
+
+	.bulk-import-actions {
+		display: flex;
+		gap: 0.5em;
+		justify-content: flex-end;
+		margin-top: 1em;
+	}
+}

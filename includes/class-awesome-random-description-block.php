@@ -28,14 +28,14 @@ class Awesome_Random_Description_Block {
 	 *
 	 * @var string
 	 */
-	private $version = '1.7.1';
+	private $version = '2026.01.12';
 
 	/**
 	 * Plugin slug
 	 *
 	 * @var string
 	 */
-	private $slug = 'awesome-random-description-block';
+	private $slug = 'awesome-random-tagline';
 
 	/**
 	 * Constructor
@@ -48,7 +48,7 @@ class Awesome_Random_Description_Block {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_assets' ) );
 
 		// Add settings link to plugins page.
-		add_filter( 'plugin_action_links_' . AWESOME_RANDOM_DESCRIPTION_PLUGIN_BASE, array( $this, 'add_plugin_links' ) );
+		add_filter( 'plugin_action_links_' . AWESOME_RANDOM_TAGLINE_PLUGIN_BASE, array( $this, 'add_plugin_links' ) );
 	}
 
 	/**
@@ -105,7 +105,7 @@ class Awesome_Random_Description_Block {
 
 		// Set translations.
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( $this->slug . '-editor', 'awesome-random-description-block', plugin_dir_path( dirname( __FILE__ ) ) . 'languages' );
+			wp_set_script_translations( $this->slug . '-editor', 'awesome-random-tagline', plugin_dir_path( dirname( __FILE__ ) ) . 'languages' );
 		}
 	}
 
@@ -281,7 +281,7 @@ class Awesome_Random_Description_Block {
 	 */
 	public function add_plugin_links( $links ) {
 		$plugin_links = array(
-			'<a href="https://wordpress.org/support/plugin/random-site-description/" target="_blank">' . __( 'Support', 'awesome-random-description-block' ) . '</a>',
+			'<a href="https://wordpress.org/support/plugin/random-site-description/" target="_blank">' . __( 'Support', 'awesome-random-tagline' ) . '</a>',
 		);
 		return array_merge( $plugin_links, $links );
 	}
