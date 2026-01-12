@@ -175,24 +175,41 @@ class Random_Tagline_Variation {
 	 * @return bool True if legacy blocks exist.
 	 */
 	private function has_legacy_blocks() {
+		$posts = $this->get_legacy_block_posts();
+		return ! empty( $posts );
+	}
+
+	/**
+	 * Get posts that contain legacy random description blocks.
+	 *
+	 * @return array Array of post objects with legacy blocks.
+	 */
+	private function get_legacy_block_posts() {
 		global $wpdb;
 
 		// Cache the result to avoid repeated queries.
-		$cache_key = 'awesome_random_has_legacy_blocks';
+		$cache_key = 'awesome_random_legacy_block_posts';
 		$result    = get_transient( $cache_key );
 
 		if ( false === $result ) {
-			$count = $wpdb->get_var(
-				"SELECT COUNT(*) FROM {$wpdb->posts}
+			// Query uses hardcoded LIKE pattern - no user input, safe from SQL injection.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$result = $wpdb->get_results(
+				"SELECT ID, post_title, post_type, post_status FROM {$wpdb->posts}
 				WHERE post_content LIKE '%<!-- wp:awesome-random-description/random-description%'
-				AND post_status IN ('publish', 'draft', 'pending', 'private')"
+				AND post_status IN ('publish', 'draft', 'pending', 'private')
+				ORDER BY post_modified DESC
+				LIMIT 20"
 			);
 
-			$result = $count > 0 ? 'yes' : 'no';
+			if ( empty( $result ) ) {
+				$result = array();
+			}
+
 			set_transient( $cache_key, $result, HOUR_IN_SECONDS );
 		}
 
-		return 'yes' === $result;
+		return $result;
 	}
 
 	/**
@@ -209,8 +226,11 @@ class Random_Tagline_Variation {
 			return;
 		}
 
+		// Get posts with legacy blocks.
+		$legacy_posts = $this->get_legacy_block_posts();
+
 		// Check if legacy blocks exist.
-		if ( ! $this->has_legacy_blocks() ) {
+		if ( empty( $legacy_posts ) ) {
 			return;
 		}
 
@@ -228,9 +248,49 @@ class Random_Tagline_Variation {
 				?>
 			</p>
 			<p>
+				<strong><?php esc_html_e( 'Pages with legacy blocks:', 'awesome-random-tagline' ); ?></strong>
+			</p>
+			<ul style="margin: 0.5em 0 1em 1.5em; list-style: disc;">
+				<?php
+				foreach ( $legacy_posts as $post ) {
+					// Verify user can edit this specific post.
+					if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+						continue;
+					}
+
+					// Get edit link - returns null if user can't edit.
+					$edit_link = get_edit_post_link( $post->ID );
+					if ( empty( $edit_link ) ) {
+						continue;
+					}
+
+					// Get post type label for context.
+					$post_type_obj = get_post_type_object( $post->post_type );
+					$type_label    = $post_type_obj ? $post_type_obj->labels->singular_name : $post->post_type;
+
+					// Build display title with fallback for empty titles.
+					$display_title = ! empty( $post->post_title ) ? $post->post_title : __( '(no title)', 'awesome-random-tagline' );
+
+					// Add status indicator for non-published posts.
+					$status_label = '';
+					if ( 'publish' !== $post->post_status ) {
+						$status_label = ' <em>(' . esc_html( $post->post_status ) . ')</em>';
+					}
+
+					printf(
+						'<li><a href="%1$s">%2$s</a> (%3$s)%4$s</li>',
+						esc_url( $edit_link ),
+						esc_html( $display_title ),
+						esc_html( $type_label ),
+						$status_label // Already escaped above.
+					);
+				}
+				?>
+			</ul>
+			<p>
 				<?php
 				esc_html_e(
-					'To migrate: Edit your page, select the old block, and use the "Transform to" option to convert it to the new Site Tagline variation.',
+					'To migrate: Edit the page, select the old block, and use the "Transform to" option to convert it to the new Site Tagline variation.',
 					'awesome-random-tagline'
 				);
 				?>
