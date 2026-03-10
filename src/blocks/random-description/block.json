@@ -6,7 +6,7 @@
   "category": "widgets",
   "icon": "format-quote",
   "description": "Displays a random site description from a list of taglines each time the page is loaded.",
-  "version": "2026.01.12",
+  "version": "2026.03.10",
   "textdomain": "awesome-random-tagline",
   "supports": {
     "html": false,

@@ -36,7 +36,6 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
 
     const [showBulkImportModal, setShowBulkImportModal] = useState(false);
     const [bulkImportText, setBulkImportText] = useState('');
-    const [csvFile, setCsvFile] = useState(null);
 
     // Get site description from WordPress
     const siteDescription = useSelect(select => {
@@ -86,17 +85,17 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                 // Sanitize each line
                 let cleaned = line.trim();
                 // Prevent injection by removing dangerous characters at the start
-                cleaned = cleaned.replace(/^[=+\-@]/, '');
+                cleaned = cleaned.replace(/^[=+\-@\t\r]+/, '');
                 return cleaned.substring(0, 500); // Limit line length
             })
             .filter(line => line.length > 0);
-        
+
         if (newTaglines.length === 0) {
             alert(__('No valid taglines found in the text.', 'awesome-random-tagline'));
             return;
         }
-        
-        setAttributes({ taglines: [...taglines, ...newTaglines] });
+
+        setAttributes({ taglines: [...taglines, ...newTaglines].slice(0, 100) });
         setBulkImportText('');
         setShowBulkImportModal(false);
     };
@@ -135,7 +134,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                 .slice(0, 100) // Limit to 100 lines
                 .map(line => {
                     // Prevent CSV injection by removing dangerous characters at the start
-                    let cleaned = line.trim().replace(/^[=+\-@]/, '');
+                    let cleaned = line.trim().replace(/^[=+\-@\t\r]+/, '');
                     // Remove quotes and unescape doubled quotes
                     cleaned = cleaned.replace(/^"(.*)"$/, '$1').replace(/""/g, '"');
                     return cleaned;
@@ -148,9 +147,9 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                 return;
             }
                 
-            setAttributes({ taglines: [...taglines, ...newTaglines] });
+            setAttributes({ taglines: [...taglines, ...newTaglines].slice(0, 100) });
         };
-        
+
         reader.onerror = () => {
             alert(__('Error reading file. Please try again.', 'awesome-random-tagline'));
         };
@@ -169,20 +168,21 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
         
         // Create a blob and download link
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        
+
         // Set up the download
-        link.href = URL.createObjectURL(blob);
+        link.href = url;
         link.download = 'taglines.csv';
         link.style.display = 'none';
-        
+
         // Trigger the download
         document.body.appendChild(link);
         link.click();
-        
+
         // Clean up
         document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
+        URL.revokeObjectURL(url);
     };
 
     // UseEffect to auto-import site tagline if no taglines exist
@@ -190,7 +190,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
         if (taglines.length === 0 && siteDescription) {
             setAttributes({ taglines: [siteDescription] });
         }
-    }, [siteDescription]);
+    }, [siteDescription, taglines.length, setAttributes]);
 
     // Block props with styles
     const blockProps = useBlockProps({
@@ -237,7 +237,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                         <div className="tagline-actions components-flex components-flex-block components-flex-direction-column">
                             <Button
                                 className="components-flex-item"
-                                isPrimary
+                                variant="primary"
                                 onClick={addTagline}
                                 icon="plus"
                             >
@@ -246,7 +246,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                             
                             <Button
                                 className="components-flex-item"
-                                isSecondary
+                                variant="secondary"
                                 onClick={() => setShowBulkImportModal(true)}
                                 icon="upload"
                             >
@@ -256,7 +256,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                             {taglines.length > 0 && (
                                 <Button
                                     className="components-flex-item"
-                                    isSecondary
+                                    variant="secondary"
                                     onClick={handleExport}
                                     icon="download"
                                 >
@@ -276,7 +276,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                         instructions={__('Add taglines in the block settings to display a random one each time the page loads.', 'awesome-random-tagline')}
                     >
                         <Button
-                            isPrimary
+                            variant="primary"
                             onClick={addTagline}
                         >
                             {__('Add Your First Tagline', 'awesome-random-tagline')}
@@ -325,7 +325,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                         
                         <div className="bulk-import-actions">
                             <Button
-                                isPrimary
+                                variant="primary"
                                 onClick={handleBulkImport}
                                 disabled={!bulkImportText.trim()}
                             >
@@ -333,7 +333,7 @@ export default function Edit({ attributes, setAttributes, clientId, isSelected }
                             </Button>
                             
                             <Button
-                                isSecondary
+                                variant="secondary"
                                 onClick={() => setShowBulkImportModal(false)}
                             >
                                 {__('Cancel', 'awesome-random-tagline')}

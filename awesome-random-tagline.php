@@ -15,8 +15,8 @@
  * Plugin Name:       Awesome Random Site Tagline
  * Plugin URI:        https://edequalsaweso.me/random-site-description
  * Description:       Adds a "Random Site Tagline" variation to the core Site Tagline block, displaying a random tagline from a custom list on each page load.
- * Version:           2026.01.12
- * Requires at least: 6.0
+ * Version:           2026.03.10
+ * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            eD! Thomas
  * Author URI:        https://edequalsaweso.me/
@@ -32,28 +32,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants
-define( 'AWESOME_RANDOM_TAGLINE_VERSION', '2026.01.12' );
+define( 'AWESOME_RANDOM_TAGLINE_VERSION', '2026.03.10' );
 define( 'AWESOME_RANDOM_TAGLINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AWESOME_RANDOM_TAGLINE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'AWESOME_RANDOM_TAGLINE_PLUGIN_FILE', __FILE__ );
 define( 'AWESOME_RANDOM_TAGLINE_PLUGIN_BASE', plugin_basename( __FILE__ ) );
-
-/**
- * The code that runs during plugin activation.
- */
-function activate_awesome_random_description_block() {
-	// Add any activation functionality here if needed
-}
-
-/**
- * The code that runs during plugin deactivation.
- */
-function deactivate_awesome_random_description_block() {
-	// Add any deactivation functionality here if needed
-}
-
-register_activation_hook( __FILE__, 'activate_awesome_random_description_block' );
-register_deactivation_hook( __FILE__, 'deactivate_awesome_random_description_block' );
 
 /**
  * Load plugin text domain for translations.

@@ -29,3 +29,9 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+// Clean up transients.
+delete_transient( 'awesome_random_legacy_block_posts' );
+
+// Clean up user meta for all users who dismissed the migration notice.
+delete_metadata( 'user', 0, 'awesome_random_tagline_migration_dismissed', '', true );

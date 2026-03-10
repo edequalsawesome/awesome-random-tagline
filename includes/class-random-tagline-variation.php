@@ -30,7 +30,7 @@ class Random_Tagline_Variation {
 	 *
 	 * @var string
 	 */
-	private $version = '2026.01.12';
+	private $version = AWESOME_RANDOM_TAGLINE_VERSION;
 
 	/**
 	 * Plugin slug
@@ -43,11 +43,11 @@ class Random_Tagline_Variation {
 	 * Constructor
 	 */
 	private function __construct() {
-		// Register scripts for the variation.
-		add_action( 'init', array( $this, 'register_variation_assets' ) );
-
 		// Filter the site-tagline block output.
 		add_filter( 'render_block_core/site-tagline', array( $this, 'render_random_tagline' ), 10, 2 );
+
+		// Clean up taglines from non-random site-tagline blocks on save.
+		add_filter( 'content_save_pre', array( $this, 'cleanup_unused_taglines' ) );
 
 		// Add admin notice for legacy block migration.
 		add_action( 'admin_notices', array( $this, 'maybe_show_migration_notice' ) );
@@ -67,49 +67,69 @@ class Random_Tagline_Variation {
 	}
 
 	/**
-	 * Register assets for the block variation.
+	 * Clean up taglines from site-tagline blocks that are not using random mode.
+	 *
+	 * When a user switches from Random Site Tagline back to regular Site Tagline
+	 * and saves, we remove the orphaned taglines data. This keeps the taglines
+	 * available during editing (in case they switch back) but cleans up on save.
+	 *
+	 * @param string $content Post content.
+	 * @return string Modified post content.
 	 */
-	public function register_variation_assets() {
-		$asset_file = include AWESOME_RANDOM_TAGLINE_PLUGIN_DIR . 'build/index.asset.php';
+	public function cleanup_unused_taglines( $content ) {
+		// Only process if content has site-tagline blocks with orphaned taglines data.
+		if ( strpos( $content, 'wp:core/site-tagline' ) === false || strpos( $content, '"taglines"' ) === false ) {
+			return $content;
+		}
 
-		// The main script already includes our variation registration.
-		// We just need to ensure it's loaded for the site-tagline block.
-		wp_register_script(
-			$this->slug . '-variation',
-			plugins_url( 'build/index.js', dirname( __FILE__ ) ),
-			$asset_file['dependencies'],
-			$asset_file['version'],
-			true
-		);
+		// Parse blocks.
+		$blocks = parse_blocks( $content );
+		if ( empty( $blocks ) ) {
+			return $content;
+		}
 
-		// Register editor styles for our custom controls.
-		wp_register_style(
-			$this->slug . '-variation-editor',
-			plugins_url( 'build/index.css', dirname( __FILE__ ) ),
-			array(),
-			$this->version
-		);
+		// Process blocks and clean up unused taglines.
+		$modified = false;
+		$blocks   = $this->cleanup_blocks_recursive( $blocks, $modified );
 
-		// Enqueue in editor.
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
+		// Only re-serialize if we made changes.
+		if ( $modified ) {
+			$content = serialize_blocks( $blocks );
+		}
+
+		return $content;
 	}
 
 	/**
-	 * Enqueue editor assets.
+	 * Recursively process blocks to clean up unused taglines.
+	 *
+	 * @param array $blocks   Array of blocks.
+	 * @param bool  $modified Reference to track if modifications were made.
+	 * @return array Modified blocks.
 	 */
-	public function enqueue_editor_assets() {
-		wp_enqueue_script( $this->slug . '-variation' );
-		wp_enqueue_style( $this->slug . '-variation-editor' );
+	private function cleanup_blocks_recursive( $blocks, &$modified ) {
+		foreach ( $blocks as $index => $block ) {
+			// Check if this is a site-tagline block.
+			if ( 'core/site-tagline' === $block['blockName'] ) {
+				$attrs = $block['attrs'] ?? array();
 
-		// Pass data to JavaScript.
-		wp_localize_script(
-			$this->slug . '-variation',
-			'awesomeRandomTagline',
-			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'awesome_random_tagline' ),
-			)
-		);
+				// If random mode is disabled but taglines exist, remove them.
+				if ( empty( $attrs['isRandomTagline'] ) && ! empty( $attrs['taglines'] ) ) {
+					unset( $blocks[ $index ]['attrs']['taglines'] );
+					$modified = true;
+				}
+			}
+
+			// Process inner blocks recursively.
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$blocks[ $index ]['innerBlocks'] = $this->cleanup_blocks_recursive(
+					$block['innerBlocks'],
+					$modified
+				);
+			}
+		}
+
+		return $blocks;
 	}
 
 	/**
@@ -165,6 +185,13 @@ class Random_Tagline_Variation {
 		if ( null === $modified_content ) {
 			return $block_content;
 		}
+
+		// Add aria-live for screen reader announcement of random content.
+		$modified_content = preg_replace(
+			'/(<p[^>]*class="[^"]*wp-block-site-tagline[^"]*")/',
+			'$1 aria-live="polite" aria-label="' . esc_attr__( 'Site description', 'awesome-random-tagline' ) . '"',
+			$modified_content
+		);
 
 		return $modified_content;
 	}

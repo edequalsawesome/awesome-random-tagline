@@ -86,7 +86,7 @@ export default function TaglineControls( { taglines = [], setTaglines } ) {
 				// Sanitize each line.
 				let cleaned = line.trim();
 				// Prevent injection by removing dangerous characters at the start.
-				cleaned = cleaned.replace( /^[=+\-@]/, '' );
+				cleaned = cleaned.replace( /^[=+\-@\t\r]+/, '' );
 				return cleaned.substring( 0, 500 ); // Limit line length.
 			} )
 			.filter( ( line ) => line.length > 0 );
@@ -102,7 +102,7 @@ export default function TaglineControls( { taglines = [], setTaglines } ) {
 			return;
 		}
 
-		setTaglines( [ ...taglines, ...newTaglines ] );
+		setTaglines( [ ...taglines, ...newTaglines ].slice( 0, 100 ) );
 		setBulkImportText( '' );
 		setShowBulkImportModal( false );
 	};
@@ -189,7 +189,7 @@ export default function TaglineControls( { taglines = [], setTaglines } ) {
 				return;
 			}
 
-			setTaglines( [ ...taglines, ...newTaglines ] );
+			setTaglines( [ ...taglines, ...newTaglines ].slice( 0, 100 ) );
 		};
 
 		reader.onerror = () => {
@@ -220,10 +220,11 @@ export default function TaglineControls( { taglines = [], setTaglines } ) {
 		const blob = new Blob( [ csvContent ], {
 			type: 'text/csv;charset=utf-8;',
 		} );
+		const url = URL.createObjectURL( blob );
 		const link = document.createElement( 'a' );
 
 		// Set up the download.
-		link.href = URL.createObjectURL( blob );
+		link.href = url;
 		link.download = 'taglines.csv';
 		link.style.display = 'none';
 
@@ -233,7 +234,7 @@ export default function TaglineControls( { taglines = [], setTaglines } ) {
 
 		// Clean up.
 		document.body.removeChild( link );
-		URL.revokeObjectURL( link.href );
+		URL.revokeObjectURL( url );
 	};
 
 	return (
