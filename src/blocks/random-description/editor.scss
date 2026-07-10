@@ -2,136 +2,140 @@
  * Random Description Block Editor Styles
  */
 
-.wp-block-awesome-random-description {
-  .taglines-panel {
-    margin-bottom: 16px !important;
-    
-    .tagline-item {
-      margin-bottom: 8px !important;
-      display: flex !important;
-      align-items: center !important;
-      
-      .components-base-control {
-        margin: 0 !important;
-        width: 100% !important;
-        flex: 1 1 auto !important;
-        
-        .components-base-control__field {
-          margin: 0 !important;
-        }
-        
-        .components-text-control__input {
-          width: 100% !important;
-        }
-      }
-      
-      .components-button.is-destructive {
-        height: 30px !important;
-        min-width: 30px !important;
-        padding: 0 !important;
-        flex: 0 0 auto !important;
-        margin-left: 8px !important;
-        
-        svg {
-          margin: 0 !important;
-        }
-      }
-    }
-    
-    .tagline-actions {
-      margin-top: 16px !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 12px !important;
-      
-      .components-button {
-        display: flex !important;
-        width: 100% !important;
-        justify-content: center !important;
-        height: auto !important;
-        padding: 6px 12px !important;
-        margin: 0 !important;
-        
-        &.is-primary,
-        &.is-secondary {
-          margin: 0 !important;
-        }
-        
-        svg {
-          margin-right: 8px !important;
-        }
-      }
-    }
-  }
-  
-  .random-description-preview {
-    padding: 1em;
-    
-    .random-description-content {
-      position: relative;
-      
-      p {
-        margin: 0 0 0.5em 0;
-        font-style: italic;
-      }
-      
-      .random-description-info {
-        font-size: 0.8em;
-        opacity: 0.7;
-        text-align: right;
-      }
-    }
-  }
-}
-
-.bulk-import-modal {
-  .bulk-import-divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 1em 0;
-    
-    &::before,
-    &::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid #ddd;
-    }
-    
-    span {
-      margin: 0 10px;
-      font-weight: bold;
-      color: #757575;
-    }
-  }
-  
-  .bulk-import-file {
-    margin-bottom: 1em;
-    
-    label {
-      display: block;
-      margin-bottom: 0.5em;
-    }
-  }
-  
-  .bulk-import-actions {
-    display: flex;
-    gap: 0.5em;
-    justify-content: flex-end;
-    margin-top: 1em;
-  }
-}
-
+/* Base (lower-specificity) helpers kept above the nested block so
+ * selector specificity ascends (no-descending-specificity). */
 .taglines-panel .tagline-item {
-  display: flex;
+	display: flex;
 }
 
 .taglines-panel .tagline-item div {
-  flex-grow: 1;
+	flex-grow: 1;
 }
 
 .taglines-panel .tagline-actions {
-  display: flex;
-  flex-direction: column;
-  margin-top: 2em;
-} 
+	display: flex;
+	flex-direction: column;
+	margin-top: 2em;
+}
+
+.wp-block-awesome-random-description {
+
+	.taglines-panel {
+		margin-bottom: 16px !important;
+
+		.tagline-actions {
+			margin-top: 16px !important;
+			display: flex !important;
+			flex-direction: column !important;
+			gap: 12px !important;
+
+			.components-button {
+				display: flex !important;
+				width: 100% !important;
+				justify-content: center !important;
+				height: auto !important;
+				padding: 6px 12px !important;
+				margin: 0 !important;
+
+				&.is-primary,
+				&.is-secondary {
+					margin: 0 !important;
+				}
+
+				svg {
+					margin-right: 8px !important;
+				}
+			}
+		}
+
+		.tagline-item {
+			margin-bottom: 8px !important;
+			display: flex !important;
+			align-items: center !important;
+
+			.components-base-control {
+				margin: 0 !important;
+				width: 100% !important;
+				flex: 1 1 auto !important;
+
+				.components-base-control__field {
+					margin: 0 !important;
+				}
+
+				.components-text-control__input {
+					width: 100% !important;
+				}
+			}
+
+			.components-button.is-destructive {
+				height: 30px !important;
+				min-width: 30px !important;
+				padding: 0 !important;
+				flex: 0 0 auto !important;
+				margin-left: 8px !important;
+
+				svg {
+					margin: 0 !important;
+				}
+			}
+		}
+	}
+
+	.random-description-preview {
+		padding: 1em;
+
+		.random-description-content {
+			position: relative;
+
+			p {
+				margin: 0 0 0.5em 0;
+				font-style: italic;
+			}
+
+			.random-description-info {
+				font-size: 0.8em;
+				opacity: 0.7;
+				text-align: right;
+			}
+		}
+	}
+}
+
+.bulk-import-modal {
+
+	.bulk-import-divider {
+		display: flex;
+		align-items: center;
+		text-align: center;
+		margin: 1em 0;
+
+		&::before,
+		&::after {
+			content: "";
+			flex: 1;
+			border-bottom: 1px solid #ddd;
+		}
+
+		span {
+			margin: 0 10px;
+			font-weight: 700;
+			color: #757575;
+		}
+	}
+
+	.bulk-import-file {
+		margin-bottom: 1em;
+
+		label {
+			display: block;
+			margin-bottom: 0.5em;
+		}
+	}
+
+	.bulk-import-actions {
+		display: flex;
+		gap: 0.5em;
+		justify-content: flex-end;
+		margin-top: 1em;
+	}
+}

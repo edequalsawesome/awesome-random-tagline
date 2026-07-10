@@ -26,20 +26,6 @@ class Random_Tagline_Variation {
 	private static $instance = null;
 
 	/**
-	 * Plugin version
-	 *
-	 * @var string
-	 */
-	private $version = AWESOME_RANDOM_TAGLINE_VERSION;
-
-	/**
-	 * Plugin slug
-	 *
-	 * @var string
-	 */
-	private $slug = 'awesome-random-tagline';
-
-	/**
 	 * Constructor
 	 */
 	private function __construct() {
@@ -77,15 +63,19 @@ class Random_Tagline_Variation {
 	 * @return string Modified post content.
 	 */
 	public function cleanup_unused_taglines( $content ) {
+		// content_save_pre passes slashed content; unslash to inspect/parse it,
+		// then re-slash on every return path so downstream wp_unslash() is balanced.
+		$content = wp_unslash( $content );
+
 		// Only process if content has site-tagline blocks with orphaned taglines data.
 		if ( strpos( $content, 'wp:core/site-tagline' ) === false || strpos( $content, '"taglines"' ) === false ) {
-			return $content;
+			return wp_slash( $content );
 		}
 
 		// Parse blocks.
 		$blocks = parse_blocks( $content );
 		if ( empty( $blocks ) ) {
-			return $content;
+			return wp_slash( $content );
 		}
 
 		// Process blocks and clean up unused taglines.
@@ -97,7 +87,7 @@ class Random_Tagline_Variation {
 			$content = serialize_blocks( $blocks );
 		}
 
-		return $content;
+		return wp_slash( $content );
 	}
 
 	/**
@@ -175,9 +165,13 @@ class Random_Tagline_Variation {
 		// Replace the tagline content in the existing HTML structure.
 		// The core site-tagline block outputs: <p class="wp-block-site-tagline">content</p>
 		// We need to replace the inner content while preserving the wrapper.
-		$modified_content = preg_replace(
+		// Use a callback so tagline text containing $1/\1-style sequences is not
+		// reinterpreted as a preg_replace backreference in the replacement string.
+		$modified_content = preg_replace_callback(
 			'/(<p[^>]*class="[^"]*wp-block-site-tagline[^"]*"[^>]*>).*?(<\/p>)/s',
-			'$1' . $random_tagline . '$2',
+			static function ( $matches ) use ( $random_tagline ) {
+				return $matches[1] . $random_tagline . $matches[2];
+			},
 			$block_content
 		);
 
@@ -187,23 +181,14 @@ class Random_Tagline_Variation {
 		}
 
 		// Add aria-live for screen reader announcement of random content.
-		$modified_content = preg_replace(
+		$with_aria = preg_replace(
 			'/(<p[^>]*class="[^"]*wp-block-site-tagline[^"]*")/',
 			'$1 aria-live="polite" aria-label="' . esc_attr__( 'Site description', 'awesome-random-tagline' ) . '"',
 			$modified_content
 		);
 
-		return $modified_content;
-	}
-
-	/**
-	 * Check if there are legacy random description blocks in the database.
-	 *
-	 * @return bool True if legacy blocks exist.
-	 */
-	private function has_legacy_blocks() {
-		$posts = $this->get_legacy_block_posts();
-		return ! empty( $posts );
+		// If the aria injection failed, fall back to the content-swapped output.
+		return null === $with_aria ? $modified_content : $with_aria;
 	}
 
 	/**

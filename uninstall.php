@@ -22,7 +22,7 @@
  * @link       https://edequalsaweso.me
  * @since      1.0.0
  *
- * @package    Random_Site_Description
+ * @package    Awesome_Random_Tagline
  */
 
 // If uninstall not called from WordPress, then exit.

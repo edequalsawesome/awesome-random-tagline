@@ -18,11 +18,14 @@ domReady( () => {
 			'awesome-random-tagline'
 		),
 		icon: 'randomize',
+		// Note: do NOT reset `taglines` here. The attribute already defaults to []
+		// on fresh insert; setting it in the variation wipes an editor's list when
+		// they transform back to Random after switching to the default variation.
 		attributes: {
 			isRandomTagline: true,
-			taglines: [],
 		},
-		isActive: ( blockAttributes ) => blockAttributes.isRandomTagline === true,
+		isActive: ( blockAttributes ) =>
+			blockAttributes.isRandomTagline === true,
 		scope: [ 'inserter', 'transform' ],
 	} );
 

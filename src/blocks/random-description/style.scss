@@ -3,63 +3,64 @@
  */
 
 .wp-block-awesome-random-description {
-  position: relative;
-  
-  .random-description-content {
-    position: relative;
-    
-    text-align: inherit;
-    p {
-      margin: 0 0 0.5em 0;
-    }
-  }
+	position: relative;
 
-  // Block Styles
-  &.is-style-fancy {
-    font-family: 'Georgia', serif;
-    font-size: 1.25em;
-    line-height: 1.6;
-    font-style: italic;
-    color: #2c3338;
-    background-color: #f0f0f1;
-    border-left: 4px solid #2271b1;
-    padding: 1.5em;
-  }
+	.random-description-content {
+		position: relative;
 
-  &.is-style-minimal {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-    font-size: 1em;
-    line-height: 1.4;
-    color: #1e1e1e;
-    padding: 0.5em 0;
-    border-bottom: 1px solid #ddd;
-  }
+		text-align: inherit;
 
-  &.is-style-bold {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-    font-size: 1.5em;
-    line-height: 1.4;
-    font-weight: 700;
-    color: #ffffff;
-    background-color: #1e1e1e;
-    padding: 1.5em;
-    text-align: center;
-  }
+		p {
+			margin: 0 0 0.5em 0;
+		}
+	}
 
-  // Text alignment support
-  &.has-text-align-left {
-    text-align: left;
-  }
+	// Block Styles
+	&.is-style-fancy {
+		font-family: Georgia, serif;
+		font-size: 1.25em;
+		line-height: 1.6;
+		font-style: italic;
+		color: #2c3338;
+		background-color: #f0f0f1;
+		border-left: 4px solid #2271b1;
+		padding: 1.5em;
+	}
 
-  &.has-text-align-center {
-    text-align: center;
-  }
+	&.is-style-minimal {
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+		font-size: 1em;
+		line-height: 1.4;
+		color: #1e1e1e;
+		padding: 0.5em 0;
+		border-bottom: 1px solid #ddd;
+	}
 
-  &.has-text-align-right {
-    text-align: right;
-  }
+	&.is-style-bold {
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+		font-size: 1.5em;
+		line-height: 1.4;
+		font-weight: 700;
+		color: #fff;
+		background-color: #1e1e1e;
+		padding: 1.5em;
+		text-align: center;
+	}
 
-  &.has-text-align-justify {
-    text-align: justify;
-  }
-} 
+	// Text alignment support
+	&.has-text-align-left {
+		text-align: left;
+	}
+
+	&.has-text-align-center {
+		text-align: center;
+	}
+
+	&.has-text-align-right {
+		text-align: right;
+	}
+
+	&.has-text-align-justify {
+		text-align: justify;
+	}
+}
