@@ -2,7 +2,7 @@
 /**
  * Random Description Block Class
  *
- * @package     Random_Site_Description
+ * @package     Awesome_Random_Tagline
  * @since       1.2.4
  */
 
@@ -22,13 +22,6 @@ class Awesome_Random_Description_Block {
 	 * @var object
 	 */
 	private static $instance = null;
-
-	/**
-	 * Plugin version
-	 *
-	 * @var string
-	 */
-	private $version = AWESOME_RANDOM_TAGLINE_VERSION;
 
 	/**
 	 * Plugin slug
@@ -114,13 +107,14 @@ class Awesome_Random_Description_Block {
 
 		// Build the block HTML with accessibility attributes
 		$html = sprintf(
-			'<div class="wp-block-awesome-random-description %1$s" style="%2$s" aria-live="polite" role="region" aria-label="Site description">
+			'<div class="wp-block-awesome-random-description %1$s" style="%2$s" aria-live="polite" role="region" aria-label="%3$s">
 				<div class="random-description-content">
-					<p>%3$s</p>
+					<p>%4$s</p>
 				</div>
 			</div>',
 			esc_attr( trim( $class_name ) ),
 			esc_attr( $style ),
+			esc_attr__( 'Site description', 'awesome-random-tagline' ),
 			esc_html( $current_tagline )
 		);
 
@@ -139,8 +133,7 @@ class Awesome_Random_Description_Block {
 		// Get style attribute
 		$style = isset( $attributes['style'] ) ? $attributes['style'] : array();
 		
-		// Allowed CSS properties and sides for security
-		$allowed_css_properties = array( 'padding', 'margin' );
+		// Allowed CSS sides for security
 		$allowed_css_sides = array( 'top', 'right', 'bottom', 'left' );
 		
 		// Handle spacing styles

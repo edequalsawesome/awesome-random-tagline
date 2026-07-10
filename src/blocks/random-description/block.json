@@ -1,49 +1,49 @@
 {
-  "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
-  "name": "awesome-random-description/random-description",
-  "title": "Awesome Random Description",
-  "category": "widgets",
-  "icon": "format-quote",
-  "description": "Displays a random site description from a list of taglines each time the page is loaded.",
-  "version": "2026.03.10",
-  "textdomain": "awesome-random-tagline",
-  "supports": {
-    "html": false,
-    "align": ["wide", "full"],
-    "spacing": {
-      "margin": ["top", "bottom"],
-      "padding": ["top", "right", "bottom", "left"],
-      "blockGap": true
-    },
-    "className": true,
-    "typography": {
-      "fontSize": true,
-      "lineHeight": true,
-      "fontStyle": true,
-      "fontWeight": true
-    },
-    "color": {
-      "text": true,
-      "background": true,
-      "gradients": true
-    },
-    "textAlign": true
-  },
-  "attributes": {
-    "taglines": {
-      "type": "array",
-      "default": []
-    },
-    "textAlign": {
-      "type": "string",
-      "default": "center"
-    },
-    "style": {
-      "type": "object"
-    }
-  },
-  "editorScript": "file:../../../build/index.js",
-  "editorStyle": "file:../../../build/index.css",
-  "style": "file:../../../build/style-index.css"
-} 
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "awesome-random-description/random-description",
+	"title": "Awesome Random Description",
+	"category": "widgets",
+	"icon": "format-quote",
+	"description": "Displays a random site description from a list of taglines each time the page is loaded.",
+	"version": "2026.07.001",
+	"textdomain": "awesome-random-tagline",
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": [ "top", "bottom" ],
+			"padding": [ "top", "right", "bottom", "left" ],
+			"blockGap": true
+		},
+		"className": true,
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"fontStyle": true,
+			"fontWeight": true
+		},
+		"color": {
+			"text": true,
+			"background": true,
+			"gradients": true
+		},
+		"textAlign": true
+	},
+	"attributes": {
+		"taglines": {
+			"type": "array",
+			"default": []
+		},
+		"textAlign": {
+			"type": "string",
+			"default": "center"
+		},
+		"style": {
+			"type": "object"
+		}
+	},
+	"editorScript": "file:../../../build/index.js",
+	"editorStyle": "file:../../../build/index.css",
+	"style": "file:../../../build/style-index.css"
+}

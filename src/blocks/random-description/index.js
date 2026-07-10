@@ -54,4 +54,4 @@ registerBlockType( metadata.name, {
 	 * Save is handled server-side by PHP callback
 	 */
 	save: () => null,
-} ); 
+} );

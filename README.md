@@ -109,6 +109,16 @@ Yes, you can import multiple taglines at once by:
 
 ## Changelog
 
+### 2026.07.001
+* Fixed taglines containing `$1`/`$2`-style text being corrupted on the front end (render now uses a callback instead of a `preg_replace` replacement string)
+* Fixed the "Random Site Tagline" variation wiping the tagline list when transforming back from the default Site Tagline variation
+* Fixed on-save tagline cleanup being a silent no-op and a potential slash-corruption path by handling `content_save_pre` slashing correctly
+* Hardened the second (aria) `preg_replace` with a null-guard so a regex failure can no longer blank the block output
+* Fixed CSV import so quoted formula-injection payloads can no longer bypass the leading-character strip; unified the strip pattern across all import paths and added UTF-8 BOM handling
+* Added accessible labels to the tagline text fields in the block editor
+* Made the legacy block's `aria-label` translatable
+* Removed dead code (unused `has_legacy_blocks()`, unused version/slug properties, unused variable) and standardized package doc tags
+
 ### 2026.01.12 (Major Redesign)
 * **Complete Architecture Overhaul**
 * Converted from standalone block to Site Tagline block variation

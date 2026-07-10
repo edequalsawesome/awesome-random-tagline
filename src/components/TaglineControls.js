@@ -1,7 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+/* eslint-env browser */
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	TextControl,
 	Button,
@@ -155,24 +156,24 @@ export default function TaglineControls( { taglines = [], setTaglines } ) {
 			if ( content.length > 100000 ) {
 				// eslint-disable-next-line no-alert
 				alert(
-					__(
-						'File content too large.',
-						'awesome-random-tagline'
-					)
+					__( 'File content too large.', 'awesome-random-tagline' )
 				);
 				return;
 			}
 
-			const lines = content.split( '\n' );
+			// Strip a leading UTF-8 BOM (common in Excel exports) before splitting.
+			const lines = content.replace( /^\uFEFF/, '' ).split( '\n' );
 			const newTaglines = lines
 				.slice( 0, 100 ) // Limit to 100 lines.
 				.map( ( line ) => {
-					// Prevent CSV injection.
-					let cleaned = line.trim().replace( /^[=+\-@]/, '' );
-					// Remove quotes and unescape doubled quotes.
-					cleaned = cleaned
+					// Unwrap quoted CSV fields FIRST, then neutralize
+					// formula-injection prefixes on the final unwrapped value —
+					// otherwise a quoted payload ("=cmd...") slips past the strip.
+					let cleaned = line
+						.trim()
 						.replace( /^"(.*)"$/, '$1' )
 						.replace( /""/g, '"' );
+					cleaned = cleaned.replace( /^[=+\-@\t\r]+/, '' );
 					return cleaned;
 				} )
 				.filter( ( line ) => line.length > 0 && line.length <= 500 )
@@ -255,12 +256,21 @@ export default function TaglineControls( { taglines = [], setTaglines } ) {
 						>
 							<div className="components-flex-item components-flex-block">
 								<TextControl
+									label={ sprintf(
+										/* translators: %d: tagline number. */
+										__(
+											'Tagline %d',
+											'awesome-random-tagline'
+										),
+										index + 1
+									) }
+									hideLabelFromVision
 									value={ tagline }
 									onChange={ ( value ) =>
 										updateTagline( index, value )
 									}
 									placeholder={ __(
-										'Enter tagline...',
+										'Enter tagline…',
 										'awesome-random-tagline'
 									) }
 								/>
@@ -364,7 +374,9 @@ export default function TaglineControls( { taglines = [], setTaglines } ) {
 
 							<Button
 								variant="secondary"
-								onClick={ () => setShowBulkImportModal( false ) }
+								onClick={ () =>
+									setShowBulkImportModal( false )
+								}
 							>
 								{ __( 'Cancel', 'awesome-random-tagline' ) }
 							</Button>
