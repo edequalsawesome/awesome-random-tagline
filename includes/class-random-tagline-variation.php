@@ -68,7 +68,7 @@ class Random_Tagline_Variation {
 		$content = wp_unslash( $content );
 
 		// Only process if content has site-tagline blocks with orphaned taglines data.
-		if ( strpos( $content, 'wp:core/site-tagline' ) === false || strpos( $content, '"taglines"' ) === false ) {
+		if ( strpos( $content, '"taglines"' ) === false || ! has_block( 'core/site-tagline', $content ) ) {
 			return wp_slash( $content );
 		}
 
